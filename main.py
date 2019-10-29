@@ -28,10 +28,9 @@ class Equation:
         self.lhs.term_list = simplified_term_list
 
 class Expression:
-    term_list = []
-
     def __init__(self, expression):
         self.expression = ''.join(expression.split())
+        self.term_list = []
         self.__parse_expression()
 
     def __parse_expression(self):
