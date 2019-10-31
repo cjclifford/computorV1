@@ -21,7 +21,6 @@ class Equation:
         self.rhs = Expression(equation.split('=')[1])
         self.__determine_highest_order()
         self.__determine_indeterminates(equation)
-        print('Polynomial degree:', self.__highest_order)
 
     def __determine_highest_order(self):
         self.__highest_order = 0
@@ -36,8 +35,12 @@ class Equation:
                 self.__indeterminates.append(c)
 
     def solve(self):
+        if len(self.lhs.terms) == 0 or len(self.rhs.terms) == 0:
+            raise InvalidPolynomialException('Incomplete equation')
         if len(self.__indeterminates) > 1:
             raise MultipleIndeterminatesException('Cannot solve polynomials with multiple indeterminates')
+
+        print('Polynomial degree:', self.__highest_order)
 
         self.rhs.flip_polarity()
 
@@ -73,7 +76,10 @@ class Equation:
         for term in self.lhs.terms:
             term_str = ''
             if term.coefficient == 0:
-                continue
+                if len(self.lhs.terms) > 1:
+                    continue
+                else:
+                    term_str += '0'
             elif int(term.coefficient) == term.coefficient:
                 term_str += str(int(term.coefficient))
             else:
